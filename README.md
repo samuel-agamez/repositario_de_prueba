@@ -4,7 +4,10 @@ API HTTP para los mazos de tarjetas con repaso espaciado (cajas de Leitner).
 Hecha con **Next.js 16 (App Router, Route Handlers)**, **TypeScript strict**,
 **firebase-admin**, **zod** y **Vitest**. Se despliega en Vercel.
 
-Repositorio hermano: `10-tarjetas-de-estudio-app` (Expo + React Native).
+Repositorio: https://github.com/samuel-agamez/repositario_de_prueba
+
+Repositorio hermano: [`finalmovil.tdea`](https://github.com/samuel-agamez/finalmovil.tdea)
+(app en Expo + React Native).
 
 ## Estado
 
