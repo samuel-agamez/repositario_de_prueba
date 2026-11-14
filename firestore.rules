@@ -1,0 +1,11 @@
+rules_version = '2';
+
+// Firestore solo se escribe desde la API con el Admin SDK (que ignora estas
+// reglas). Ningún cliente de la app móvil toca la base directamente.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
