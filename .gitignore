@@ -1,0 +1,34 @@
+# Dependencias y build
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+
+# Secretos y credenciales
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+*.jks
+firebase-adminsdk*.json
+serviceAccount*.json
+.vercel/
+.firebase/
+
+# Configuración local de la IA
+.claude/settings.local.json
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+*.log
+npm-debug.log*
