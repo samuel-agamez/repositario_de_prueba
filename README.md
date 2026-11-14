@@ -8,9 +8,11 @@ Repositorio hermano: `10-tarjetas-de-estudio-app` (Expo + React Native).
 
 ## Estado
 
-- Primer commit: **configuración de IA y de calidad**.
-- Las rutas de autenticación, mazos, tarjetas y sincronización se construyen en
-  los siguientes commits.
+- `7f65101`: **configuración de IA y de calidad** (primer commit).
+- `ee20262`: ruta de salud, manejo de errores y pruebas.
+
+Las rutas de autenticación, mazos, tarjetas y sincronización se construyen en
+los siguientes commits.
 
 ## Requisitos
 

@@ -55,3 +55,15 @@ Se agregan las entradas de cada sesión real; no se borran las correcciones.
   desconocido; el 500 siempre responde `Error interno`.
 - **Decisión**: las rutas lanzan `ApiError` y un único `respuestaError` arma
   la respuesta; nunca se devuelve `error.message` de un error no controlado.
+
+## 2026-11-14 — Base de la API verificada
+
+- **Propósito**: comprobar que la base de la API compila y pasa la puerta de
+  calidad antes de escribir autenticación y sincronización.
+- **Evidencia**: `app/api/salud/route.ts`, `lib/errors.ts`,
+  `tests/errors.test.ts`, `tests/salud.test.ts`, `firestore.rules`,
+  `firestore.indexes.json` y `firebase.json`.
+- **Validación**: `npm run check` (typecheck, lint, formato y 5 pruebas; 100 %
+  de cobertura en `lib/errors.ts`) y `npm run build` con Next.js 16.
+- **Decisión**: se sigue con `/api/auth/*` en la próxima sesión. Las reglas de
+  Firestore ya niegan todo a los clientes para que la API sea la única puerta.
