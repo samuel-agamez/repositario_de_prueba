@@ -34,6 +34,8 @@ npm run dev
 
 ## Variables de entorno
 
+El proyecto de Firebase es **`finalmovil-f14ba`** (ver `.firebaserc`).
+
 | Variable                | Uso                                                              |
 | ----------------------- | ---------------------------------------------------------------- |
 | `FIREBASE_PROJECT_ID`   | Proyecto de Firebase que usa el Admin SDK.                       |
