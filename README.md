@@ -17,8 +17,9 @@ Repositorio hermano: [`finalmovil.tdea`](https://github.com/samuel-agamez/finalm
 - `11caad0`: proyecto de Firebase (Auth, Firestore, reglas e índices).
 - **Autenticación**: `/api/auth/registro`, `/login`, `/refresh` y `/yo`.
 - **Sincronización**: `GET ?since=`, `PUT` y `DELETE` en mazos y tarjetas.
+- **Mazos públicos**: publicación desde `PUT`, listado y copia de mazos.
 
-Quedan los mazos públicos y la copia de mazos (46 pruebas en total).
+Con esto la API cubre las 10 funcionalidades del contrato (61 pruebas).
 
 ## Requisitos
 
@@ -80,8 +81,17 @@ servidor.
 
 ### Propias del proyecto
 
-- `GET /api/mazos/publicos`: mazos públicos.
-- `POST /api/mazos/:id/copiar`: copia un mazo público con un `batch` (≤ 500).
+| Método | Ruta                    | Comportamiento                                             |
+| ------ | ----------------------- | ---------------------------------------------------------- |
+| `GET`  | `/api/mazos/publicos`   | `200 { items }`; mazos publicados (máximo 500).            |
+| `POST` | `/api/mazos/:id/copiar` | `201 { item }`; copia el mazo y sus tarjetas con un batch. |
+
+Un mazo se publica con un `PUT` con `publico: true`: la API guarda una copia
+en `mazos_publicos` (metadatos + tarjetas activas, máximo 500) y la retira
+cuando `publico` vuelve a `false`. Las tarjetas de un mazo publicado
+actualizan también su copia y su `total_tarjetas`. La copia creada por
+`copiar` es privada (`publico: false`), con UUIDs nuevos y las tarjetas en
+caja 1.
 
 Todos los errores usan `{ "error": "mensaje", "detalles"?: [{ "campo", "mensaje" }] }`
 con códigos 400/401/403/404/409/413/415/429. Los errores internos responden

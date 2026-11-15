@@ -19,7 +19,7 @@ function ruta(uid: string, coleccion: ColeccionUsuario): string {
   return `usuarios/${uid}/${coleccion}`;
 }
 
-function creadoEn(actual: DocumentSnapshot, ahora: string): string {
+export function creadoEn(actual: DocumentSnapshot, ahora: string): string {
   const guardado = actual.exists ? actual.data() : undefined;
   return typeof guardado?.created_at === 'string' ? guardado.created_at : ahora;
 }
@@ -65,15 +65,21 @@ export async function guardar(
 }
 
 /** DELETE con borrado lógico; no repite la escritura si ya estaba borrado. */
-export async function borrar(uid: string, coleccion: ColeccionUsuario, id: string): Promise<void> {
+export async function borrar(
+  uid: string,
+  coleccion: ColeccionUsuario,
+  id: string,
+): Promise<Record<string, unknown>> {
   const ref = getDb().collection(ruta(uid, coleccion)).doc(id);
   const actual = await ref.get();
   if (!actual.exists) {
     throw noEncontrado(MENSAJES_NO_ENCONTRADO[coleccion]);
   }
-  if (actual.data()?.deleted_at) {
-    return;
+  const datos = actual.data() ?? {};
+  if (datos.deleted_at) {
+    return datos;
   }
   const ahora = new Date().toISOString();
   await ref.update({ deleted_at: ahora, updated_at: ahora });
+  return datos;
 }

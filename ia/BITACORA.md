@@ -99,3 +99,20 @@ Se agregan las entradas de cada sesión real; no se borran las correcciones.
   `DELETE` no repite la escritura si el ítem ya estaba borrado. La prueba se
   escribió primero y falló por rutas inexistentes; se dividió en tres archivos
   por el límite de 300 líneas.
+
+## 2026-11-14 — Mazos públicos y copia de mazos
+
+- **Propósito**: cerrar las dos funcionalidades propias: publicar y listar
+  mazos públicos y copiarlos al usuario con un `batch`.
+- **Evidencia**: `lib/services/publicos.ts`,
+  `app/api/mazos/publicos/route.ts`, `app/api/mazos/[id]/copiar/route.ts`,
+  la publicación desde `PUT` de mazos y la sincronización de copias desde las
+  rutas de tarjetas; pruebas en `tests/publicos.test.ts`,
+  `tests/publicos-tarjetas.test.ts` y `tests/copiar.test.ts`.
+- **Validación**: `npm run check` (61 pruebas; cobertura 98,47 % statements,
+  86,90 % ramas y 97,72 % funciones) y `npm run build` con las once rutas.
+- **Decisión**: publicar lee las tarjetas con `mazo_id == id` (índice ya
+  creado) y copia solo las activas; cada lote tiene ≤ 500 operaciones y la
+  copia genera UUIDs nuevas con tarjetas en caja 1. Las pruebas se escribieron
+  primero y fallaron por rutas inexistentes y por falta de la sincronización
+  de copias.

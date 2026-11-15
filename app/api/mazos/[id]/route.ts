@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { usuarioDe } from '../../../../lib/auth';
 import { leerJson, responderError, validar } from '../../../../lib/http';
 import { mazoSchema, validarIdRecurso } from '../../../../lib/schemas';
+import { despublicar, publicar } from '../../../../lib/services/publicos';
 import { borrar, guardar } from '../../../../lib/services/sincronizacion';
 
 export const runtime = 'nodejs';
@@ -15,6 +16,11 @@ export async function PUT(request: Request, { params }: ContextoRuta) {
     validarIdRecurso(id);
     const campos = validar(mazoSchema, await leerJson(request));
     const item = await guardar(usuario.id, 'mazo', id, campos);
+    if (campos.publico) {
+      await publicar(usuario.id, id, campos.nombre);
+    } else {
+      await despublicar(id);
+    }
     return NextResponse.json({ item });
   } catch (error) {
     return responderError(error);

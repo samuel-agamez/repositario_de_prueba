@@ -25,12 +25,16 @@ instalaciones sin permiso. No leer `.env*`, claves ni
 - Autenticación implementada: `/api/auth/registro`, `/api/auth/login`,
   `/api/auth/refresh` y `/api/auth/yo`.
 - Sincronización implementada: `GET ?since=`, `PUT` y `DELETE` en
-  `/api/mazos` y `/api/tarjetas`. `npm run check` y `npm run build` pasan;
-  46 pruebas; cobertura 99,15 % statements, 90,62 % ramas y 100 % funciones.
+  `/api/mazos` y `/api/tarjetas`.
+- Mazos públicos: `PUT` con `publico: true` publica en `mazos_publicos`,
+  `GET /api/mazos/publicos` lista y `POST /api/mazos/:id/copiar` copia.
+  `npm run check` y `npm run build` pasan; 61 pruebas; cobertura 98,47 %
+  statements, 86,90 % ramas y 97,72 % funciones.
 
 ### Pendiente inmediato
 
-1. `GET /api/mazos/publicos` y `POST /api/mazos/:id/copiar`.
+1. Vercel: `vercel link`, variables de entorno y previsualización (con
+   autorización) para probar los endpoints reales.
 2. Recrear este archivo si vuelve a faltar: ya se perdió una vez después de
    crearlo.
 
@@ -56,15 +60,15 @@ Pendientes: directorio `app/` con `_layout.tsx` y rutas Expo; `scheme`,
 como dependencia directa; `react-native-web` a `~0.21.4`. La app sin
 credenciales Firebase: solo consume la API. Nada de EAS sin autorización.
 
-### API: después de sincronización
+### API terminada
 
-- `GET /api/mazos/publicos` y `POST /api/mazos/:id/copiar`.
-- Pruebas, documentación y despliegue de esos bloques.
+Las 10 funcionalidades del contrato están implementadas y con pruebas.
+Solo queda desplegar en Vercel y probar los endpoints reales.
 
 ## Git
 
-- API: `origin/main` en `11caad0`; autenticación y sincronización van como
-  commits locales sin push (autorización pendiente).
+- API: `origin/main` en `11caad0`; autenticación, sincronización y mazos
+  públicos van como commits locales sin push (autorización pendiente).
   Remote: `https://github.com/samuel-agamez/repositario_de_prueba.git`.
 - App móvil: `https://github.com/samuel-agamez/finalmovil.tdea.git`.
 - Sin paquetes npm instalados desde GitHub; las dependencias vienen de npm y
