@@ -13,9 +13,12 @@ Repositorio hermano: [`finalmovil.tdea`](https://github.com/samuel-agamez/finalm
 
 - `7f65101`: **configuración de IA y de calidad** (primer commit).
 - `ee20262`: ruta de salud, manejo de errores y pruebas.
+- `e8b75b7` y `b4fd315`: documentación y corrección de enlaces.
+- `11caad0`: proyecto de Firebase (Auth, Firestore, reglas e índices).
+- **Autenticación**: `/api/auth/registro`, `/login`, `/refresh` y `/yo`,
+  con 26 pruebas.
 
-Las rutas de autenticación, mazos, tarjetas y sincronización se construyen en
-los siguientes commits.
+Quedan las rutas de sincronización, mazos públicos y copia de mazos.
 
 ## Requisitos
 
@@ -106,7 +109,7 @@ solo la API escribe, con el Admin SDK.
 ## Configuración de IA
 
 - `AGENTS.md`: reglas del proyecto (≤ 100 líneas).
-- `CLAUDE.md`: solo `@AGENTS.md`.
+- `CLAUDE.md`: `@AGENTS.md` más el contexto de traspaso.
 - `.claude/settings.json`: permisos, sandbox, red y hook.
 - `.claude/hooks/protect.mjs`: hook `PreToolUse` que bloquea con código 2.
 - `ia/`: configuración, pruebas de contención y bitácora.

@@ -1,1 +1,2 @@
 @AGENTS.md
+@ia/CONTEXTO-CLAUDE.md

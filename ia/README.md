@@ -7,8 +7,9 @@ Este índice y las pruebas se versionan en el **primer commit** del repositorio.
 | [`CONFIGURACION.md`](CONFIGURACION.md)           | Qué riesgo cubre cada barrera, sus límites y los ajustes hechos. |
 | [`PRUEBAS-CONTENCION.md`](PRUEBAS-CONTENCION.md) | Las 10 pruebas obligatorias con prompt, resultado y evidencia.   |
 | [`BITACORA.md`](BITACORA.md)                     | Propósito, evidencia, validación y decisión de cada uso de IA.   |
+| [`CONTEXTO-CLAUDE.md`](CONTEXTO-CLAUDE.md)       | Estado y traspaso reproducible para Claude Code.                 |
 | `../AGENTS.md`                                   | Reglas del proyecto que lee la IA (≤ 100 líneas).                |
-| `../CLAUDE.md`                                   | Solo `@AGENTS.md`, para Claude Code.                             |
+| `../CLAUDE.md`                                   | `@AGENTS.md` más el contexto de traspaso, para Claude Code.      |
 | `../.claude/settings.json`                       | Permisos, sandbox, red y hook de protección.                     |
 | `../.claude/hooks/protect.mjs`                   | Hook `PreToolUse` propio (bloquea con código 2).                 |
 | `../.claude/hooks/protect.test.mjs`              | 10 pruebas del hook con `node:test`.                             |

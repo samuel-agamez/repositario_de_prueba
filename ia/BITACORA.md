@@ -67,3 +67,17 @@ Se agregan las entradas de cada sesión real; no se borran las correcciones.
   de cobertura en `lib/errors.ts`) y `npm run build` con Next.js 16.
 - **Decisión**: se sigue con `/api/auth/*` en la próxima sesión. Las reglas de
   Firestore ya niegan todo a los clientes para que la API sea la única puerta.
+
+## 2026-11-14 — Autenticación completa
+
+- **Propósito**: implementar registro, login, renovación y consulta de
+  usuario mediados por Firebase Auth, sin exponer credenciales a la app.
+- **Evidencia**: `lib/firebase.ts`, `lib/auth.ts`, `lib/http.ts`,
+  `lib/schemas.ts`, `lib/services/firebase-auth.ts`, las cuatro rutas en
+  `app/api/auth/`, `tests/auth.test.ts` y `tests/auth-errores.test.ts`.
+- **Validación**: `npm run check` (26 pruebas; cobertura 98,75 % statements,
+  87,5 % ramas y 100 % funciones) y `npm run build` con las cinco rutas
+  dinámicas.
+- **Decisión**: el `uid` sale solo de `getAuth().verifyIdToken()`; los errores
+  de Firebase se traducen al formato `{ error, detalles? }` sin filtrar
+  detalles internos. El despliegue en Vercel queda pendiente de autorización.
