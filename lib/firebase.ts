@@ -1,4 +1,5 @@
 import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
+import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 
 function variableObligatoria(nombre: string): string {
   const valor = process.env[nombre];
@@ -22,4 +23,13 @@ export function getFirebaseApp(): App {
       privateKey,
     }),
   });
+}
+
+let database: Firestore | null = null;
+
+export function getDb(): Firestore {
+  if (!database) {
+    database = getFirestore(getFirebaseApp());
+  }
+  return database;
 }

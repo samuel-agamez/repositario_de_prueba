@@ -23,14 +23,14 @@ instalaciones sin permiso. No leer `.env*`, claves ni
 - Cuenta de servicio y clave privada descargadas; el contenido nunca se leyó
   ni se versionó.
 - Autenticación implementada: `/api/auth/registro`, `/api/auth/login`,
-  `/api/auth/refresh` y `/api/auth/yo`. `npm run check` y `npm run build`
-  pasan; 26 pruebas; cobertura 98,75 % statements, 87,5 % ramas, 100 %
-  funciones.
+  `/api/auth/refresh` y `/api/auth/yo`.
+- Sincronización implementada: `GET ?since=`, `PUT` y `DELETE` en
+  `/api/mazos` y `/api/tarjetas`. `npm run check` y `npm run build` pasan;
+  46 pruebas; cobertura 99,15 % statements, 90,62 % ramas y 100 % funciones.
 
 ### Pendiente inmediato
 
-1. Commit local de autenticación (revisar diff antes; push solo con
-   autorización).
+1. `GET /api/mazos/publicos` y `POST /api/mazos/:id/copiar`.
 2. Recrear este archivo si vuelve a faltar: ya se perdió una vez después de
    crearlo.
 
@@ -56,16 +56,15 @@ Pendientes: directorio `app/` con `_layout.tsx` y rutas Expo; `scheme`,
 como dependencia directa; `react-native-web` a `~0.21.4`. La app sin
 credenciales Firebase: solo consume la API. Nada de EAS sin autorización.
 
-### API: después de autenticación
+### API: después de sincronización
 
-- Sincronización privada: `GET /api/<recurso>?since=`, `PUT` y `DELETE` por
-  recurso.
 - `GET /api/mazos/publicos` y `POST /api/mazos/:id/copiar`.
 - Pruebas, documentación y despliegue de esos bloques.
 
 ## Git
 
-- API: `origin/main` en `11caad0` antes de esta sesión.
+- API: `origin/main` en `11caad0`; autenticación y sincronización van como
+  commits locales sin push (autorización pendiente).
   Remote: `https://github.com/samuel-agamez/repositario_de_prueba.git`.
 - App móvil: `https://github.com/samuel-agamez/finalmovil.tdea.git`.
 - Sin paquetes npm instalados desde GitHub; las dependencias vienen de npm y

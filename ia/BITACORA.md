@@ -81,3 +81,21 @@ Se agregan las entradas de cada sesión real; no se borran las correcciones.
 - **Decisión**: el `uid` sale solo de `getAuth().verifyIdToken()`; los errores
   de Firebase se traducen al formato `{ error, detalles? }` sin filtrar
   detalles internos. El despliegue en Vercel queda pendiente de autorización.
+
+## 2026-11-14 — Sincronización de mazos y tarjetas
+
+- **Propósito**: implementar las tres operaciones de sincronización
+  (`GET ?since=`, `PUT` idempotente y `DELETE` con borrado lógico) para los
+  dos recursos privados.
+- **Evidencia**: `app/api/mazos/route.ts`, `app/api/mazos/[id]/route.ts`,
+  `app/api/tarjetas/route.ts`, `app/api/tarjetas/[id]/route.ts`,
+  `lib/services/sincronizacion.ts`, `getDb` en `lib/firebase.ts`,
+  `usuarioDe` en `lib/auth.ts`, `leerSince` en `lib/http.ts`, los esquemas
+  nuevos en `lib/schemas.ts` y `tests/sincronizacion*.test.ts`.
+- **Validación**: `npm run check` (46 pruebas; cobertura 99,15 % statements,
+  90,62 % ramas y 100 % funciones) y `npm run build` con las ocho rutas.
+- **Decisión**: `since` es opcional y se exige en formato ISO 8601 UTC; los
+  campos de tiempo del cuerpo se ignoran y siempre los pone el servidor;
+  `DELETE` no repite la escritura si el ítem ya estaba borrado. La prueba se
+  escribió primero y falló por rutas inexistentes; se dividió en tres archivos
+  por el límite de 300 líneas.

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { validacion } from './errors';
 
 export const credencialesSchema = z
   .object({
@@ -23,3 +24,25 @@ export const refreshTokenSchema = z
       .max(4096, 'El token de actualización es demasiado largo'),
   })
   .strict();
+
+export const mazoSchema = z.object({
+  nombre: z.string().trim().min(1, 'El nombre es obligatorio'),
+  publico: z.boolean('Debe ser verdadero o falso'),
+});
+
+export const tarjetaSchema = z.object({
+  mazo_id: z.string().uuid('Debe ser un UUID'),
+  pregunta: z.string().trim().min(1, 'La pregunta es obligatoria'),
+  respuesta: z.string().trim().min(1, 'La respuesta es obligatoria'),
+  caja: z.number().int('Debe ser un número entero').min(1, 'La caja empieza en 1'),
+  proxima_revision: z.string().datetime('Debe ser una fecha ISO 8601 UTC').nullable(),
+});
+
+export type MazoCampos = z.infer<typeof mazoSchema>;
+export type TarjetaCampos = z.infer<typeof tarjetaSchema>;
+
+export function validarIdRecurso(id: string): void {
+  if (!z.string().uuid().safeParse(id).success) {
+    throw validacion([{ campo: 'id', mensaje: 'Debe ser un UUID' }]);
+  }
+}

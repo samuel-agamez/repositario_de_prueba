@@ -24,6 +24,19 @@ export function validar<T>(schema: z.ZodType<T>, cuerpo: unknown): T {
   );
 }
 
+const EPOCH = '1970-01-01T00:00:00.000Z';
+
+export function leerSince(request: Request): string {
+  const valor = new URL(request.url).searchParams.get('since');
+  if (valor === null) {
+    return EPOCH;
+  }
+  if (!z.iso.datetime().safeParse(valor).success) {
+    throw validacion([{ campo: 'since', mensaje: 'Debe ser una fecha ISO 8601 UTC' }]);
+  }
+  return valor;
+}
+
 export function responderError(error: unknown): NextResponse {
   const { status, body } = respuestaError(error);
   return NextResponse.json(body, { status });

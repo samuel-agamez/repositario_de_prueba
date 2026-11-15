@@ -15,10 +15,10 @@ Repositorio hermano: [`finalmovil.tdea`](https://github.com/samuel-agamez/finalm
 - `ee20262`: ruta de salud, manejo de errores y pruebas.
 - `e8b75b7` y `b4fd315`: documentación y corrección de enlaces.
 - `11caad0`: proyecto de Firebase (Auth, Firestore, reglas e índices).
-- **Autenticación**: `/api/auth/registro`, `/login`, `/refresh` y `/yo`,
-  con 26 pruebas.
+- **Autenticación**: `/api/auth/registro`, `/login`, `/refresh` y `/yo`.
+- **Sincronización**: `GET ?since=`, `PUT` y `DELETE` en mazos y tarjetas.
 
-Quedan las rutas de sincronización, mazos públicos y copia de mazos.
+Quedan los mazos públicos y la copia de mazos (46 pruebas en total).
 
 ## Requisitos
 
@@ -71,6 +71,12 @@ El `uid` sale **del token**, nunca del cuerpo ni de la URL.
 | `GET`    | `/api/<recurso>?since=` | `200 { items, servidor_ahora }`; máximo 500, incluye borrados. |
 | `PUT`    | `/api/<recurso>/<id>`   | Crea o reemplaza de forma idempotente.                         |
 | `DELETE` | `/api/<recurso>/<id>`   | Borrado lógico (`deleted_at`); `404` si no existe.             |
+
+`<recurso>` es `mazos` o `tarjetas` y el `id` de la ruta debe ser UUID.
+`since` es opcional y debe ser ISO 8601 UTC (por defecto, el inicio).
+`PUT` responde `200 { item }`; `DELETE` responde `200 { ok: true }`.
+Los campos de tiempo enviados en el cuerpo se ignoran: siempre los pone el
+servidor.
 
 ### Propias del proyecto
 

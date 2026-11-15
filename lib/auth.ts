@@ -50,3 +50,8 @@ export async function verificarToken(token: string): Promise<UsuarioAutenticado>
     throw error;
   }
 }
+
+/** Usuario que llama a la ruta, obtenido solo del token Bearer. */
+export async function usuarioDe(request: Request): Promise<UsuarioAutenticado> {
+  return verificarToken(tokenBearer(request.headers.get('authorization')));
+}
