@@ -114,6 +114,18 @@ describe('errores de Firebase Auth', () => {
     expect(url).not.toContain('%22');
   });
 
+  it('devuelve 429 cuando Firebase pide esperar por demasiados intentos', async () => {
+    fetchMock.mockResolvedValueOnce(
+      respuestaJson({ error: { message: 'TOO_MANY_ATTEMPTS_TRY_LATER' } }, 429),
+    );
+    const response = await iniciarSesion(peticionJson(credenciales));
+
+    expect(response.status).toBe(429);
+    await expect(response.json()).resolves.toEqual({
+      error: 'Demasiados intentos, espera un momento e inténtalo de nuevo',
+    });
+  });
+
   it('devuelve 500 si no puede contactar Firebase', async () => {
     fetchMock.mockRejectedValueOnce(new Error('detalle interno de red'));
 

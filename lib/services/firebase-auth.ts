@@ -100,6 +100,9 @@ function errorDeFirebase(cuerpo: unknown, operacion: OperacionAuth): Error {
     // eslint-disable-next-line no-console -- código de error de Firebase, sin datos personales
     console.error(`[firebase-auth] ${operacion} código: ${codigo}`);
   }
+  if (codigo === 'TOO_MANY_ATTEMPTS_TRY_LATER') {
+    return new ApiError(429, 'Demasiados intentos, espera un momento e inténtalo de nuevo');
+  }
   const error = manejadoresError[operacion](codigo);
   return error ?? new Error('Firebase Auth rechazó la operación');
 }

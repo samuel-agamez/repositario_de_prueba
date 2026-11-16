@@ -32,8 +32,16 @@ export const mazoSchema = z.object({
 
 export const tarjetaSchema = z.object({
   mazo_id: z.string().uuid('Debe ser un UUID'),
-  pregunta: z.string().trim().min(1, 'La pregunta es obligatoria'),
-  respuesta: z.string().trim().min(1, 'La respuesta es obligatoria'),
+  pregunta: z
+    .string()
+    .trim()
+    .min(1, 'La pregunta es obligatoria')
+    .max(300, 'La pregunta debe tener máximo 300 caracteres'),
+  respuesta: z
+    .string()
+    .trim()
+    .min(1, 'La respuesta es obligatoria')
+    .max(300, 'La respuesta debe tener máximo 300 caracteres'),
   caja: z.number().int('Debe ser un número entero').min(1, 'La caja empieza en 1'),
   proxima_revision: z.string().datetime('Debe ser una fecha ISO 8601 UTC').nullable(),
 });

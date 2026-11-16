@@ -169,6 +169,44 @@ describe('PUT /api/mazos/[id] y /api/tarjetas/[id]', () => {
     });
   });
 
+  it('rechaza una pregunta de más de 300 caracteres', async () => {
+    const response = await guardarTarjeta(
+      peticionPut('http://localhost/api/tarjetas/x', {
+        mazo_id: UUID_MAZO,
+        pregunta: 'x'.repeat(301),
+        respuesta: 'Unidad básica de la vida',
+        caja: 1,
+        proxima_revision: null,
+      }),
+      { params: Promise.resolve({ id: UUID_TARJETA }) },
+    );
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: 'Datos inválidos',
+      detalles: [{ campo: 'pregunta', mensaje: 'La pregunta debe tener máximo 300 caracteres' }],
+    });
+  });
+
+  it('rechaza una respuesta de más de 300 caracteres', async () => {
+    const response = await guardarTarjeta(
+      peticionPut('http://localhost/api/tarjetas/x', {
+        mazo_id: UUID_MAZO,
+        pregunta: '¿Qué es una célula?',
+        respuesta: 'y'.repeat(301),
+        caja: 1,
+        proxima_revision: null,
+      }),
+      { params: Promise.resolve({ id: UUID_TARJETA }) },
+    );
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: 'Datos inválidos',
+      detalles: [{ campo: 'respuesta', mensaje: 'La respuesta debe tener máximo 300 caracteres' }],
+    });
+  });
+
   it('admite proxima_revision nula', async () => {
     const response = await guardarTarjeta(
       peticionPut('http://localhost/api/tarjetas/x', {
