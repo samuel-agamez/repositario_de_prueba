@@ -38,6 +38,11 @@ export function leerSince(request: Request): string {
 }
 
 export function responderError(error: unknown): NextResponse {
+  if (!(error instanceof ApiError) && error instanceof Error) {
+    // Solo errores no controlados; sin datos personales ni secretos.
+    // eslint-disable-next-line no-console -- diagnóstico de errores 500 en servidor
+    console.error(`[500] ${error.name}: ${error.message}`.slice(0, 300));
+  }
   const { status, body } = respuestaError(error);
   return NextResponse.json(body, { status });
 }

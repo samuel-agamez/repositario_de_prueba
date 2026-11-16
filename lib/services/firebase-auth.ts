@@ -95,7 +95,12 @@ const manejadoresError: Record<OperacionAuth, (codigo: string | null) => Error |
 };
 
 function errorDeFirebase(cuerpo: unknown, operacion: OperacionAuth): Error {
-  const error = manejadoresError[operacion](codigoDeError(cuerpo));
+  const codigo = codigoDeError(cuerpo);
+  if (codigo) {
+    // eslint-disable-next-line no-console -- código de error de Firebase, sin datos personales
+    console.error(`[firebase-auth] ${operacion} código: ${codigo}`);
+  }
+  const error = manejadoresError[operacion](codigo);
   return error ?? new Error('Firebase Auth rechazó la operación');
 }
 
@@ -129,6 +134,8 @@ async function requestFirebase(
     cuerpo = null;
   }
   if (!respuesta.ok) {
+    // eslint-disable-next-line no-console -- status HTTP de Firebase, sin datos personales
+    console.error(`[firebase-auth] ${operacion} → HTTP ${respuesta.status}`);
     throw errorDeFirebase(cuerpo, operacion);
   }
   return cuerpo;
