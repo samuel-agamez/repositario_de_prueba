@@ -101,6 +101,19 @@ describe('errores de Firebase Auth', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('limpia espacios y comillas accidentales de la clave web', async () => {
+    vi.stubEnv('FIREBASE_WEB_API_KEY', '  "web-key-prueba"  ');
+    fetchMock.mockResolvedValueOnce(respuestaJson({ error: { message: 'INVALID_EMAIL' } }, 400));
+
+    const response = await registrar(peticionJson(credenciales));
+
+    expect(response.status).toBe(400);
+    const url = String(fetchMock.mock.calls[0]?.[0]);
+    expect(url).toContain('key=web-key-prueba');
+    expect(url).not.toContain('%20');
+    expect(url).not.toContain('%22');
+  });
+
   it('devuelve 500 si no puede contactar Firebase', async () => {
     fetchMock.mockRejectedValueOnce(new Error('detalle interno de red'));
 

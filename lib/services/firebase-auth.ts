@@ -104,13 +104,17 @@ function errorDeFirebase(cuerpo: unknown, operacion: OperacionAuth): Error {
   return error ?? new Error('Firebase Auth rechazó la operación');
 }
 
+function limpiarClaveWeb(valor: string | undefined): string | undefined {
+  return valor?.trim().replace(/^['"]+|['"]+$/g, '');
+}
+
 async function requestFirebase(
   url: string,
   body: BodyInit,
   contentType: string,
   operacion: OperacionAuth,
 ): Promise<unknown> {
-  const apiKey = process.env.FIREBASE_WEB_API_KEY;
+  const apiKey = limpiarClaveWeb(process.env.FIREBASE_WEB_API_KEY);
   if (!apiKey) {
     throw new Error('Falta la variable de entorno FIREBASE_WEB_API_KEY');
   }
