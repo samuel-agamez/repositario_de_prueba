@@ -143,3 +143,26 @@ Se agregan las entradas de cada sesión real; no se borran las correcciones.
   recomienda el Firewall de Vercel, como sugiere el enunciado. El rol
   `admin` con claim queda sin rutas de administración, porque el enunciado
   no define ninguna para este proyecto.
+
+## 2026-11-17 — Login con correo o contraseña inválidos ya no devuelve 500
+
+- **Propósito**: corregir el 500 que la app móvil mostraba al iniciar sesión
+  con credenciales mal formadas.
+- **Evidencia**: `lib/services/firebase-auth.ts` (`errorDeLogin` traduce
+  `INVALID_EMAIL` y `MISSING_EMAIL` a 400 con detalle en `email`, y
+  `MISSING_PASSWORD` a 400 con detalle en `password`) y dos pruebas nuevas en
+  `tests/auth-errores.test.ts`.
+- **Validación**: la prueba se escribió primero y falló con
+  `expected 500 to be 400`; después `npm run check` quedó en verde (68
+  pruebas) y se comprobó contra producción: correo mal formado → 400, sin
+  contraseña → 400, sin correo → 400, credenciales inexistentes → 401,
+  contraseña incorrecta → 401, login válido → 200 y registro → 201. La
+  sincronización de mazos y tarjetas (GET `?since=`, PUT idempotente) siguió
+  respondiendo 200.
+- **Decisión**: los errores de Firebase que ya son un problema de formato
+  válido del cliente se traducen a `ApiError` de validación (400) en vez de
+  dejar que caigan en el 500 genérico; `INVALID_LOGIN_CREDENTIALS`,
+  `INVALID_PASSWORD`, `EMAIL_NOT_FOUND` y `USER_DISABLED` siguen siendo 401
+  para no revelar si la cuenta existe. El proyecto de Vercel no tiene
+  integración con Git, así que el despliegue a producción se hizo con
+  `vercel deploy --prod`.
