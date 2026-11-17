@@ -126,6 +126,30 @@ describe('errores de Firebase Auth', () => {
     });
   });
 
+  it('devuelve 400 si Firebase rechaza el correo al iniciar sesión', async () => {
+    fetchMock.mockResolvedValueOnce(respuestaJson({ error: { message: 'INVALID_EMAIL' } }, 400));
+
+    const response = await iniciarSesion(peticionJson(credenciales));
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: 'Datos inválidos',
+      detalles: [{ campo: 'email', mensaje: 'Debe ser un correo electrónico válido' }],
+    });
+  });
+
+  it('devuelve 400 si falta la contraseña al iniciar sesión', async () => {
+    fetchMock.mockResolvedValueOnce(respuestaJson({ error: { message: 'MISSING_PASSWORD' } }, 400));
+
+    const response = await iniciarSesion(peticionJson(credenciales));
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: 'Datos inválidos',
+      detalles: [{ campo: 'password', mensaje: 'Debe tener al menos 6 caracteres' }],
+    });
+  });
+
   it('devuelve 500 si no puede contactar Firebase', async () => {
     fetchMock.mockRejectedValueOnce(new Error('detalle interno de red'));
 

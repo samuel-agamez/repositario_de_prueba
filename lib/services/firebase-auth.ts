@@ -74,6 +74,12 @@ function errorDeRegistro(codigo: string | null): Error | null {
 }
 
 function errorDeLogin(codigo: string | null): Error | null {
+  if (codigo === 'INVALID_EMAIL' || codigo === 'MISSING_EMAIL') {
+    return validacion([{ campo: 'email', mensaje: 'Debe ser un correo electrónico válido' }]);
+  }
+  if (codigo === 'MISSING_PASSWORD') {
+    return validacion([{ campo: 'password', mensaje: 'Debe tener al menos 6 caracteres' }]);
+  }
   const errores = [
     'INVALID_LOGIN_CREDENTIALS',
     'INVALID_PASSWORD',
