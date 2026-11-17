@@ -19,7 +19,16 @@ Repositorio hermano: [`finalmovil.tdea`](https://github.com/samuel-agamez/finalm
 - **Sincronización**: `GET ?since=`, `PUT` y `DELETE` en mazos y tarjetas.
 - **Mazos públicos**: publicación desde `PUT`, listado y copia de mazos.
 
-Con esto la API cubre las 10 funcionalidades del contrato (61 pruebas).
+Con esto la API cubre las 10 funcionalidades del contrato (65 pruebas).
+
+**Despliegue**: <https://10-tarjetas-de-estudio-api.vercel.app> (producción).
+Comprobado de punta a punta: los catorce chequeos de salud, registro, login,
+`yo`, `refresh`, sincronización de mazos y tarjetas, publicación, listado de
+públicos, copia y borrados devuelven el código esperado.
+
+Extras que pide el enunciado: `/api/health` (alias de `/api/salud`),
+pregunta y respuesta con máximo 300 caracteres y respuesta `429` cuando
+Firebase pide esperar por demasiados intentos.
 
 ## Requisitos
 

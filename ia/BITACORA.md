@@ -116,3 +116,30 @@ Se agregan las entradas de cada sesión real; no se borran las correcciones.
   copia genera UUIDs nuevas con tarjetas en caja 1. Las pruebas se escribieron
   primero y fallaron por rutas inexistentes y por falta de la sincronización
   de copias.
+
+## 2026-11-16 — Despliegue en Vercel y cierre del contrato
+
+- **Propósito**: dejar la API desplegada y funcionando al 100 % del contrato
+  (sección 9 del enunciado) y tapar los tres huecos que quedaban: límite de
+  300 caracteres en pregunta y respuesta, ruta `/api/health` y respuesta 429
+  cuando Firebase pide esperar.
+- **Evidencia**: `app/api/health/route.ts` (alias de `salud`),
+  `lib/schemas.ts` (límite de 300), `lib/services/firebase-auth.ts`
+  (código `TOO_MANY_ATTEMPTS_TRY_LATER` → 429) y sus pruebas en
+  `tests/salud.test.ts`, `tests/sincronizacion-put.test.ts` y
+  `tests/auth-errores.test.ts`. En el despliegue se corrigió además el error
+  `ERR_REQUIRE_ESM` de `firebase-admin` con `overrides` en `package.json`
+  (`jwks-rsa` → `jose@4.15.9`), y la clave web se lee limpiando espacios y
+  comillas (`limpiarClaveWeb`) porque al pegarla en Vercel quedaba con
+  caracteres de más.
+- **Validación**: `npm run check` en verde (65 pruebas) y comprobación real
+  contra `https://10-tarjetas-de-estudio-api.vercel.app`: los catorce
+  chequeos de salud, registro, login, yo, refresh, sincronización de mazos y
+  tarjetas, publicación, listado de públicos, copia y borrados devuelven el
+  código esperado (fallos = 0). Los errores se diagnosticaron con
+  `vercel logs`, que muestran el código de Firebase sin datos personales.
+- **Decisión**: no se limita la tasa de login con código propio (el estado es
+  efímero en funciones serverless); se traduce el 429 de Firebase y se
+  recomienda el Firewall de Vercel, como sugiere el enunciado. El rol
+  `admin` con claim queda sin rutas de administración, porque el enunciado
+  no define ninguna para este proyecto.
